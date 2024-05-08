@@ -4,11 +4,11 @@
  */
 package main.java;
 
-import main.java.forms.InstructorLogin;
+import main.java.forms.WelcomePage;
 public class Main {
     public static void main(String[] args) {
-        InstructorLogin sd = new InstructorLogin();
-        sd.setVisible(true);
+        WelcomePage wp = new WelcomePage();
+        wp.setVisible(true);
         
     }
 }

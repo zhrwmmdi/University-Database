@@ -92,7 +92,7 @@ public class InstructorTable extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(26, 26, 26)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(145, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -159,8 +159,7 @@ public class InstructorTable extends javax.swing.JFrame {
              state.setString(1, loginId);
              ResultSet result = state.executeQuery();
              result.next();
-             String name = result.getString(1);
-             jLabel2.setText(name);
+             jLabel2.setText(result.getString(1));
          } catch (SQLException ex) {
              Logger.getLogger(InstructorTable.class.getName()).log(Level.SEVERE, null, ex);
          }
