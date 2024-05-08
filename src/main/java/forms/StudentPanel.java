@@ -83,8 +83,22 @@ public class StudentPanel extends javax.swing.JFrame {
         try {
             PreparedStatement state = Tools.getConnection().prepareStatement("select takes.course_id, course.title, instructor.name, takes.sec_id, takes.semester, takes.year, takes.grade from (course natural join takes), instructor, teaches where takes.id=? and takes.course_id=teaches.course_id and takes.sec_id=teaches.sec_id and takes.year = teaches.year and takes.semester = teaches.semester and instructor.id=teaches.id;");
             state.setString(1,StudentLogin.getLoginId());
-            ResultSet result = state.executeQuery();
-            new Certificate(result).setVisible(true);
+            ResultSet fullDataResult = state.executeQuery();
+            state = Tools.getConnection().prepareStatement("with certificate as (select takes.course_id, course.title, instructor.name, takes.sec_id, takes.semester,takes.year, takes.grade from (course natural join takes), instructor, teaches where takes.id=? and takes.course_id=teaches.course_id and takes.sec_id=teaches.sec_id and takes.year = teaches.year and takes.semester = teaches.semester and instructor.id=teaches.id) select avg(\n" +
+"    case grade\n" +
+"    when 'A' then 100\n" +
+"    when 'B' then 90\n" +
+"    when 'C' then 80\n" +
+"    when 'F' then 50\n" +
+"    when 'A-' then 97\n" +
+"    when 'C-' then 77\n" +
+"    when 'B+' then 93\n" +
+"    else 0\n" +
+"    end)\n" +
+"    as average_grade from certificate;");
+            state.setString(1,StudentLogin.getLoginId());
+            ResultSet avgResult = state.executeQuery();
+            new Certificate(fullDataResult, avgResult).setVisible(true);
             //show these data on a table
             
         } catch (SQLException ex) {
