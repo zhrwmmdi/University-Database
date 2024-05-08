@@ -8,8 +8,6 @@ package main.java.forms;
 import main.java.tools.Tools;
 import java.sql.*;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,11 +16,13 @@ import javax.swing.JOptionPane;
  */
 public class InstructorLogin extends javax.swing.JFrame {
 
-    /**
-     * Creates new form InstructorLogin
-     */
+    static String loginID;
     public InstructorLogin() {
         initComponents();
+    }
+    
+    public static String getLoginId(){
+        return loginID;
     }
 
     /**
@@ -91,28 +91,23 @@ public class InstructorLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String instructorId = jTextField1.getText();
+        loginID = jTextField1.getText();
         try {
             PreparedStatement statement = Tools.getConnection().prepareStatement("SELECT COUNT(*) FROM instructor WHERE ID = ?");
-            statement.setString(1, instructorId);
+            statement.setString(1, loginID);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                    //int count = resultSet.getInt(1);
                     boolean exists = resultSet.getInt(1) > 0;
                     if (exists){
-                        new TablesPage().setVisible(true);
+                        new InstructorPanel().setVisible(true);
                         this.setVisible(false);
                     }else{
                         JOptionPane.showMessageDialog(null, "User ID does not exist in the instructor table. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
             }
-            
         } catch (SQLException ex) {
-            System.out.println("error in login button method "+ex.getMessage());
+            System.out.println("error in login button method: "+ex.getMessage());
         }
-        
-     
-        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
