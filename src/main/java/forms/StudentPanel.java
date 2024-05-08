@@ -19,6 +19,7 @@ public class StudentPanel extends javax.swing.JFrame {
      */
     public StudentPanel() {
         initComponents();
+        findStudentName(StudentLogin.getLoginId());
     }
 
     /**
@@ -31,38 +32,48 @@ public class StudentPanel extends javax.swing.JFrame {
     private void initComponents() {
 
         jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton2.setText("Students' list");
+        jButton2.setText("See certificate");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
 
-        jButton3.setText("add student");
+        jLabel1.setText("Name:");
+
+        jLabel2.setText("empty");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(159, 159, 159)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton3)
-                    .addComponent(jButton2))
-                .addContainerGap(145, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(159, 159, 159)
+                        .addComponent(jButton2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(41, 41, 41)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(51, 51, 51)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(90, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(149, 149, 149)
+                .addGap(37, 37, 37)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addGap(96, 96, 96)
                 .addComponent(jButton2)
-                .addGap(36, 36, 36)
-                .addComponent(jButton3)
-                .addContainerGap(121, Short.MAX_VALUE))
+                .addContainerGap(180, Short.MAX_VALUE))
         );
 
         pack();
@@ -70,10 +81,10 @@ public class StudentPanel extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
-            PreparedStatement state = Tools.getConnection().prepareStatement("select student.name, course.title, takes.grade from (takes natural join course), student, teaches where takes.id = student.id and teaches.course_id = takes.course_id and teaches.id = ?;");
-            state.setString(1,InstructorLogin.getLoginId());
+            PreparedStatement state = Tools.getConnection().prepareStatement("select takes.course_id, course.title, instructor.name, takes.sec_id, takes.semester, takes.year, takes.grade from (course natural join takes), instructor, teaches where takes.id=? and takes.course_id=teaches.course_id and takes.sec_id=teaches.sec_id and takes.year = teaches.year and takes.semester = teaches.semester and instructor.id=teaches.id;");
+            state.setString(1,StudentLogin.getLoginId());
             ResultSet result = state.executeQuery();
-            new InstructorTable(result).setVisible(true);
+            new Certificate(result).setVisible(true);
             //show these data on a table
             
         } catch (SQLException ex) {
@@ -122,6 +133,20 @@ public class StudentPanel extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
+
+    private void findStudentName(String loginId) {
+         try {
+             PreparedStatement state = Tools.getConnection().prepareStatement("select name from student where id=?");
+             state.setString(1, loginId);
+             ResultSet result = state.executeQuery();
+             result.next();
+             jLabel2.setText(result.getString(1));
+         } catch (SQLException ex) {
+             Logger.getLogger(InstructorTable.class.getName()).log(Level.SEVERE, null, ex);
+         }
+        
+    }
 }
