@@ -15,6 +15,7 @@ public class InsertStudent extends javax.swing.JFrame {
      */
     public InsertStudent() {
         initComponents();
+        setDefaultCloseOperation(HIDE_ON_CLOSE);
     }
 
     /**

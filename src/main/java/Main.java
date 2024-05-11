@@ -11,7 +11,7 @@ public class Main {
         wp.setVisible(true);
       
         
-        //TODO: Student insertion and reading data from tables
+        //TODO:  reading data from tables
         //TODO: back buttons
         //closing connections
     }

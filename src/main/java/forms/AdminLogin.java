@@ -122,9 +122,7 @@ public class AdminLogin extends javax.swing.JFrame {
                         this.setVisible(false);
                     }else{
                          JOptionPane.showMessageDialog(null, "Wrong password. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-
-                            
+                    }             
                 } else {
                     JOptionPane.showMessageDialog(null, "Username does not exist in the admin table. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
                 }

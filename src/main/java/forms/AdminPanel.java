@@ -3,6 +3,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package main.java.forms;
+
+import java.sql.*;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+import main.java.tools.Tools;
+
 /**
  *
  * @author Hp
@@ -14,6 +28,7 @@ public class AdminPanel extends javax.swing.JFrame {
      */
     public AdminPanel() {
         initComponents();
+        activateTablesList();
     }
 
     /**
@@ -25,17 +40,15 @@ public class AdminPanel extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jList2 = new javax.swing.JList<>();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jButton2.setText("Tables");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
 
         jButton3.setText("add student");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
@@ -44,40 +57,107 @@ public class AdminPanel extends javax.swing.JFrame {
             }
         });
 
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane3.setViewportView(jTable1);
+
+        jScrollPane2.setViewportView(jList2);
+
+        jLabel1.setText("Admin panel");
+
+        jLabel2.setText("Tables:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(159, 159, 159)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(148, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(71, 71, 71)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton3)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(37, 37, 37)
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 645, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(457, 457, 457)
+                        .addComponent(jLabel1)))
+                .addContainerGap(118, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(149, 149, 149)
-                .addComponent(jButton2)
-                .addGap(36, 36, 36)
+                .addGap(33, 33, 33)
+                .addComponent(jLabel1)
+                .addGap(15, 15, 15)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
                 .addComponent(jButton3)
-                .addContainerGap(121, Short.MAX_VALUE))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        //see tables
-        
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        this.setVisible(false);
         new AddStudentFrame().setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void displayTableData(String tableName){
+         // Clear the existing table data
+//        ((javax.swing.table.DefaultTableModel) jTable1.getModel()).setDataVector(new Object[][]{}, new Object[]{});
+
+        try {
+           PreparedStatement state = Tools.getConnection().prepareStatement("SELECT * FROM " + tableName);
+            ResultSet resultSet = state.executeQuery();
+
+            // Get metadata about the ResultSet
+            java.sql.ResultSetMetaData metaData = resultSet.getMetaData();
+
+            // Get column count
+            int columnCount = metaData.getColumnCount();
+
+            // Create a two-dimensional array to hold table data
+            Object[][] data = new Object[100][columnCount];
+
+            // Populate the array with data from the ResultSet
+            int row = 0;
+            while (resultSet.next() && row < 100) {
+                for (int i = 1; i <= columnCount; i++) {
+                    data[row][i - 1] = resultSet.getObject(i);
+                }
+                row++;
+            }
+
+            // Create an array of column names
+            Object[] columnNames = new Object[columnCount];
+            for (int i = 1; i <= columnCount; i++) {
+                columnNames[i - 1] = metaData.getColumnName(i);
+            }
+
+            // Set the data and column names in jTable1
+            jTable1.setModel(new javax.swing.table.DefaultTableModel(data, columnNames));
+
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    
     /**
      * @param args the command line arguments
      */
@@ -117,7 +197,43 @@ public class AdminPanel extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JList<String> jList2;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
+
+    private void activateTablesList() {
+DefaultListModel<String> listModel = new DefaultListModel<>();
+        
+        try {
+            PreparedStatement state = Tools.getConnection().prepareCall("SHOW TABLES");
+            ResultSet result = state.executeQuery();
+            
+            while(result.next()){
+                String tableName = result.getString(1);
+                listModel.addElement(tableName);
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error is finding table name: "+ex.getMessage());
+        }
+        
+        
+        jList2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        jList2.setModel(listModel);
+        
+        // Add a ListSelectionListener to the JList
+        jList2.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    String selectedTable = jList2.getSelectedValue();
+                    displayTableData(selectedTable);
+                }
+            }
+        });
+    }
 }
