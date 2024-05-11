@@ -13,5 +13,6 @@ public class Main {
         
         //TODO: Student insertion and reading data from tables
         //TODO: back buttons
+        //closing connections
     }
 }
