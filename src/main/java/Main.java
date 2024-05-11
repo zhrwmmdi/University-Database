@@ -9,6 +9,9 @@ public class Main {
     public static void main(String[] args) {
         WelcomePage wp = new WelcomePage();
         wp.setVisible(true);
+      
         
+        //TODO: Student insertion and reading data from tables
+        //TODO: back buttons
     }
 }
