@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package main.java.forms;
 
 import java.sql.*;
@@ -9,20 +5,13 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import main.java.tools.Tools;
 
-/**
- *
- * @author Hp
- */
 public class InsertStudent extends javax.swing.JFrame {
 
     ArrayList<String> deptNames;
 
-    /**
-     * Creates new form AddStudent
-     */
     public InsertStudent() {
         initComponents();
-        fillDepartments();
+        fillDepartmentsComboBox();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         Tools.setCenter(this);
     }
@@ -140,6 +129,7 @@ public class InsertStudent extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Insertion was unsuccessful. Try again!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (SQLException e) {
+            System.out.println("Error in add buttton of InsertStudent class: "+e.getMessage());
             JOptionPane.showMessageDialog(null, "Insertion was unsuccessful. Try again!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -195,19 +185,18 @@ public class InsertStudent extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
 
-    private void fillDepartments() {
+    private void fillDepartmentsComboBox() {
         deptNames = new ArrayList();
         try {
             PreparedStatement state = Tools.getConnection().prepareStatement("SELECT dept_name FROM department;");
             ResultSet result = state.executeQuery();
 
             while (result.next()) {
-
                 deptNames.add(result.getString(1));
             }
 
         } catch (SQLException ex) {
-            System.out.println("Error in fillinf combo box, "+ ex.getMessage());
+            System.out.println("Error in fillDepartmentsComboBox method in InsertStudent Class:  "+ ex.getMessage());
         }
 
         for (String dept : deptNames) {

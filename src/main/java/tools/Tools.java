@@ -1,10 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package main.java.tools;
-
-
 
 import java.awt.Toolkit;
 import java.sql.Connection;
@@ -14,9 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import main.java.forms.InstructorStudentsList;
@@ -32,8 +23,8 @@ public class Tools  {
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             connect = DriverManager.getConnection(url, username, password);
-        }catch(Exception e){
-            System.out.println("Error in getConnection method"+e.getMessage());  
+        }catch(ClassNotFoundException | SQLException e){
+            System.out.println("Error in getConnection method in Tools class: "+e.getMessage());  
         }
         return connect;
     }
