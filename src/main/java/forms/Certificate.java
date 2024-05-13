@@ -4,6 +4,7 @@
  */
 package main.java.forms;
 
+import main.java.forms.loginpages.StudentLogin;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,7 +49,7 @@ public final class Certificate extends javax.swing.JFrame {
                 model.addRow(content);
             }
             } catch (SQLException ex) {
-                Logger.getLogger(InstructorTable.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(InstructorStudentsList.class.getName()).log(Level.SEVERE, null, ex);
             }
     }
 

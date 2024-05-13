@@ -13,7 +13,6 @@ public class Main {
         
 
         //TODO: clean code and refactoring
-        //TODO: back buttons
         //closing connections
     }
 }
