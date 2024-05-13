@@ -2,9 +2,6 @@ package main.java.forms;
 
 import main.java.forms.loginpages.InstructorLogin;
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import main.java.tools.Tools;
 
@@ -36,7 +33,7 @@ public class InstructorStudentsList extends javax.swing.JFrame {
                 model.addRow(content);
             }
             } catch (SQLException ex) {
-                Logger.getLogger(InstructorStudentsList.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("Error in fillTable method of InstructorStudentsList class: "+ex.getMessage());
             }
     }
 

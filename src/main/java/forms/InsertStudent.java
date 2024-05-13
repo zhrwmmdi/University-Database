@@ -115,7 +115,8 @@ public class InsertStudent extends javax.swing.JFrame {
         String tot_cred = jTextField3.getText();
 
         try {
-            PreparedStatement state = Tools.getConnection().prepareStatement("INSERT INTO student VALUES(?,?,?,?)");
+            PreparedStatement state = Tools.connectToDB()
+                    .prepareStatement("INSERT INTO student VALUES(?,?,?,?)");
             state.setString(1, ID);
             state.setString(2, name);
             state.setString(3, dept_name);
@@ -126,11 +127,13 @@ public class InsertStudent extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Student added successfully!");
             } else {
                 // If no rows were inserted, something went wrong
-                JOptionPane.showMessageDialog(null, "Insertion was unsuccessful. Try again!", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Insertion was unsuccessful. Try again!",
+                                                                        "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (SQLException e) {
             System.out.println("Error in add buttton of InsertStudent class: "+e.getMessage());
-            JOptionPane.showMessageDialog(null, "Insertion was unsuccessful. Try again!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Insertion was unsuccessful. Try again!", 
+                                                                    "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -188,7 +191,8 @@ public class InsertStudent extends javax.swing.JFrame {
     private void fillDepartmentsComboBox() {
         deptNames = new ArrayList();
         try {
-            PreparedStatement state = Tools.getConnection().prepareStatement("SELECT dept_name FROM department;");
+            PreparedStatement state = Tools.connectToDB()
+                    .prepareStatement("SELECT dept_name FROM department;");
             ResultSet result = state.executeQuery();
 
             while (result.next()) {

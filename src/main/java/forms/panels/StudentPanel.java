@@ -1,7 +1,5 @@
 package main.java.forms.panels;
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import main.java.forms.Certificate;
 import main.java.forms.loginpages.StudentLogin;
 import main.java.forms.WelcomePage;
@@ -84,11 +82,20 @@ public class StudentPanel extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
-            PreparedStatement state = Tools.getConnection().prepareStatement("select takes.course_id, course.title, instructor.name, takes.sec_id, takes.semester, takes.year, takes.grade from (course natural join takes), instructor, teaches where takes.id=? and takes.course_id=teaches.course_id and takes.sec_id=teaches.sec_id and takes.year = teaches.year and takes.semester = teaches.semester and instructor.id=teaches.id;");
+            PreparedStatement state = Tools.connectToDB().prepareStatement(
+                    "select takes.course_id, course.title, instructor.name, takes.sec_id, takes.semester, takes.year, takes.grade"
+                            + " from (course natural join takes), instructor, teaches"
+                            + " where takes.id=? and takes.course_id=teaches.course_id and takes.sec_id=teaches.sec_id "
+                            + "and takes.year = teaches.year and takes.semester = teaches.semester and instructor.id=teaches.id;");
             state.setString(1,StudentLogin.getLoginID());
             ResultSet fullDataResult = state.executeQuery();
-            state = Tools.getConnection().prepareStatement("""
-                                                           with certificate as (select takes.course_id, course.title, instructor.name, takes.sec_id, takes.semester,takes.year, takes.grade from (course natural join takes), instructor, teaches where takes.id=? and takes.course_id=teaches.course_id and takes.sec_id=teaches.sec_id and takes.year = teaches.year and takes.semester = teaches.semester and instructor.id=teaches.id) select avg(
+            state = Tools.connectToDB().prepareStatement("""
+                                                           with certificate as
+                                                           (select takes.course_id, course.title, instructor.name, takes.sec_id, takes.semester,takes.year, takes.grade
+                                                           from (course natural join takes), instructor, teaches
+                                                           where takes.id=? and takes.course_id=teaches.course_id and takes.sec_id=teaches.sec_id 
+                                                           and takes.year = teaches.year and takes.semester = teaches.semester and instructor.id=teaches.id)
+                                                           select avg(
                                                                case grade
                                                                when 'A' then 100
                                                                when 'B' then 90
@@ -105,7 +112,7 @@ public class StudentPanel extends javax.swing.JFrame {
             new Certificate(fullDataResult, avgResult).setVisible(true);
             
         } catch (SQLException ex) {
-            Logger.getLogger(StudentPanel.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Error in see certificate button method of StudentPanel class: "+ex.getMessage());
         }
         
     }//GEN-LAST:event_jButton2ActionPerformed

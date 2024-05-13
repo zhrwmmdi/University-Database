@@ -161,7 +161,7 @@ public final class Certificate extends javax.swing.JFrame {
 
     private void setStudentData() {
         try {
-            PreparedStatement state  = Tools.getConnection().prepareStatement("select * from student where id = ?");
+            PreparedStatement state  = Tools.connectToDB().prepareStatement("select * from student where id = ?");
             state.setString(1, StudentLogin.getLoginID());
             ResultSet result = state.executeQuery();
             result.next();

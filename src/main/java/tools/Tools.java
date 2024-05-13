@@ -19,7 +19,7 @@ public class Tools  {
     
     static Connection connect;
     
-    public static Connection getConnection(){
+    public static Connection connectToDB(){
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
             connect = DriverManager.getConnection(url, username, password);
@@ -43,7 +43,7 @@ public class Tools  {
     
     public static void fillPanelName(String loginId, String relation, JLabel jLabel) {
         try {
-             PreparedStatement state = Tools.getConnection().prepareStatement("select name from %s where id=?".formatted(relation));
+             PreparedStatement state = Tools.connectToDB().prepareStatement("select name from %s where id=?".formatted(relation));
              state.setString(1, loginId);
              ResultSet result = state.executeQuery();
              result.next();
