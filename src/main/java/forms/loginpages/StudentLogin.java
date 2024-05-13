@@ -21,11 +21,13 @@ public class StudentLogin extends javax.swing.JFrame {
     static String loginID;
     public StudentLogin() {
         initComponents();
+        Tools.setCenter(this);
     }
-    
-    public static String getLoginId(){
+
+    public static String getLoginID() {
         return loginID;
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -114,7 +116,7 @@ public class StudentLogin extends javax.swing.JFrame {
             if (resultSet.next()) {
                     boolean exists = resultSet.getInt(1) > 0;
                     if (exists){
-                        new StudentPanel().setVisible(true);
+                        new StudentPanel(loginID).setVisible(true);
                         this.setVisible(false);
                     }else{
                         JOptionPane.showMessageDialog(null, "User ID does not exist in the student table. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);

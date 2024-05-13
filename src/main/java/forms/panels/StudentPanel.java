@@ -7,7 +7,6 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import main.java.forms.Certificate;
-import main.java.forms.InstructorStudentsList;
 import main.java.forms.loginpages.StudentLogin;
 import main.java.forms.WelcomePage;
 import main.java.tools.Tools;
@@ -21,9 +20,15 @@ public class StudentPanel extends javax.swing.JFrame {
     /**
      * Creates new form TablesPage
      */
-    public StudentPanel() {
+    
+     public StudentPanel(){
         initComponents();
-        findStudentName(StudentLogin.getLoginId());
+    }
+
+    public StudentPanel(String loginId) {
+        initComponents();
+        Tools.fillPanelName(loginId, "Student", jLabel2);
+        Tools.setCenter(this);
     }
 
     /**
@@ -97,21 +102,22 @@ public class StudentPanel extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
             PreparedStatement state = Tools.getConnection().prepareStatement("select takes.course_id, course.title, instructor.name, takes.sec_id, takes.semester, takes.year, takes.grade from (course natural join takes), instructor, teaches where takes.id=? and takes.course_id=teaches.course_id and takes.sec_id=teaches.sec_id and takes.year = teaches.year and takes.semester = teaches.semester and instructor.id=teaches.id;");
-            state.setString(1,StudentLogin.getLoginId());
+            state.setString(1,StudentLogin.getLoginID());
             ResultSet fullDataResult = state.executeQuery();
-            state = Tools.getConnection().prepareStatement("with certificate as (select takes.course_id, course.title, instructor.name, takes.sec_id, takes.semester,takes.year, takes.grade from (course natural join takes), instructor, teaches where takes.id=? and takes.course_id=teaches.course_id and takes.sec_id=teaches.sec_id and takes.year = teaches.year and takes.semester = teaches.semester and instructor.id=teaches.id) select avg(\n" +
-"    case grade\n" +
-"    when 'A' then 100\n" +
-"    when 'B' then 90\n" +
-"    when 'C' then 80\n" +
-"    when 'F' then 50\n" +
-"    when 'A-' then 97\n" +
-"    when 'C-' then 77\n" +
-"    when 'B+' then 93\n" +
-"    else 0\n" +
-"    end)\n" +
-"    as average_grade from certificate;");
-            state.setString(1,StudentLogin.getLoginId());
+            state = Tools.getConnection().prepareStatement("""
+                                                           with certificate as (select takes.course_id, course.title, instructor.name, takes.sec_id, takes.semester,takes.year, takes.grade from (course natural join takes), instructor, teaches where takes.id=? and takes.course_id=teaches.course_id and takes.sec_id=teaches.sec_id and takes.year = teaches.year and takes.semester = teaches.semester and instructor.id=teaches.id) select avg(
+                                                               case grade
+                                                               when 'A' then 100
+                                                               when 'B' then 90
+                                                               when 'C' then 80
+                                                               when 'F' then 50
+                                                               when 'A-' then 97
+                                                               when 'C-' then 77
+                                                               when 'B+' then 93
+                                                               else 0
+                                                               end)
+                                                               as average_grade from certificate;""");
+            state.setString(1,StudentLogin.getLoginID());
             ResultSet avgResult = state.executeQuery();
             new Certificate(fullDataResult, avgResult).setVisible(true);
             //show these data on a table
@@ -171,17 +177,4 @@ public class StudentPanel extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     // End of variables declaration//GEN-END:variables
-
-    private void findStudentName(String loginId) {
-         try {
-             PreparedStatement state = Tools.getConnection().prepareStatement("select name from student where id=?");
-             state.setString(1, loginId);
-             ResultSet result = state.executeQuery();
-             result.next();
-             jLabel2.setText(result.getString(1));
-         } catch (SQLException ex) {
-             Logger.getLogger(InstructorStudentsList.class.getName()).log(Level.SEVERE, null, ex);
-         }
-        
-    }
 }

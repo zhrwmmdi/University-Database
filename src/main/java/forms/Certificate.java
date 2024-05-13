@@ -21,7 +21,6 @@ public final class Certificate extends javax.swing.JFrame {
      */
     public Certificate() {
         initComponents();
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
     public Certificate(ResultSet result, ResultSet result2) {
         initComponents();
@@ -29,6 +28,7 @@ public final class Certificate extends javax.swing.JFrame {
         fillCertificate(result);
         displayAvg(result2);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        Tools.setCenter(this);
     }
     public void fillCertificate(ResultSet result){
        
@@ -203,7 +203,7 @@ public final class Certificate extends javax.swing.JFrame {
     private void setStudentData() {
         try {
             PreparedStatement state  = Tools.getConnection().prepareStatement("select * from student where id = ?");
-            state.setString(1, StudentLogin.getLoginId());
+            state.setString(1, StudentLogin.getLoginID());
             ResultSet result = state.executeQuery();
             result.next();
             

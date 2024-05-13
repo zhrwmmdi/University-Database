@@ -25,6 +25,7 @@ public class AdminPanel extends javax.swing.JFrame {
     public AdminPanel() {
         initComponents();
         activateTablesList();
+        Tools.setCenter(this);
     }
 
     /**

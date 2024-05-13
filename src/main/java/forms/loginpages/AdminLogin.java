@@ -23,6 +23,7 @@ public class AdminLogin extends javax.swing.JFrame {
 
     public AdminLogin() {
         initComponents();
+        Tools.setCenter(this);
     }
 
     public static String getLoginUsername() {

@@ -19,9 +19,10 @@ public class InstructorStudentsList extends javax.swing.JFrame {
   
     public InstructorStudentsList(ResultSet result){
         initComponents();
-        findTeacherName(InstructorLogin.getLoginId());
+        Tools.fillPanelName(InstructorLogin.getLoginID(), "instructor", jLabel2);
         fillTable(result);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        Tools.setCenter(this);
         
             }
     
@@ -104,9 +105,9 @@ public class InstructorStudentsList extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
+                .addGap(31, 31, 31)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(104, 104, 104))
+                .addContainerGap(155, Short.MAX_VALUE))
         );
 
         pack();
@@ -156,17 +157,4 @@ public class InstructorStudentsList extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
-
-    private void findTeacherName(String loginId) {
-         try {
-             PreparedStatement state = Tools.getConnection().prepareStatement("select name from instructor where id=?");
-             state.setString(1, loginId);
-             ResultSet result = state.executeQuery();
-             result.next();
-             jLabel2.setText(result.getString(1));
-         } catch (SQLException ex) {
-             Logger.getLogger(InstructorStudentsList.class.getName()).log(Level.SEVERE, null, ex);
-         }
-        
-    }
 }

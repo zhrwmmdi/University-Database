@@ -7,6 +7,7 @@ package main.java.forms;
 import main.java.forms.loginpages.InstructorLogin;
 import main.java.forms.loginpages.StudentLogin;
 import main.java.forms.loginpages.AdminLogin;
+import main.java.tools.Tools;
 
 /**
  *
@@ -19,6 +20,7 @@ public class WelcomePage extends javax.swing.JFrame {
      */
     public WelcomePage() {
         initComponents();
+        Tools.setCenter(this);
     }
 
     /**

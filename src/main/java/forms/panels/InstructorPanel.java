@@ -25,7 +25,8 @@ public class InstructorPanel extends javax.swing.JFrame {
     }
     public InstructorPanel(String loginId) {
         initComponents();
-        fillName(loginId);
+        Tools.fillPanelName(loginId, "instructor", jLabel2);
+        Tools.setCenter(this);
     }
 
     /**
@@ -105,7 +106,7 @@ public class InstructorPanel extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         try {
             PreparedStatement state = Tools.getConnection().prepareStatement("select student.name, course.title, takes.grade from (takes natural join course), student, teaches where takes.id = student.id and teaches.course_id = takes.course_id and teaches.id = ?;");
-            state.setString(1,InstructorLogin.getLoginId());
+            state.setString(1,InstructorLogin.getLoginID());
             ResultSet result = state.executeQuery();
             new InstructorStudentsList(result).setVisible(true);
             //show these data on a table
@@ -165,15 +166,4 @@ public class InstructorPanel extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     // End of variables declaration//GEN-END:variables
 
-    private void fillName(String loginId) {
-        try {
-             PreparedStatement state = Tools.getConnection().prepareStatement("select name from instructor where id=?");
-             state.setString(1, loginId);
-             ResultSet result = state.executeQuery();
-             result.next();
-             jLabel2.setText(result.getString(1));
-         } catch (SQLException ex) {
-             Logger.getLogger(InstructorStudentsList.class.getName()).log(Level.SEVERE, null, ex);
-         }
-    }
 }

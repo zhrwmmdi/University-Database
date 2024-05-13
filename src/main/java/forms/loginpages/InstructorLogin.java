@@ -21,11 +21,13 @@ public class InstructorLogin extends javax.swing.JFrame {
     static String loginID;
     public InstructorLogin() {
         initComponents();
+        Tools.setCenter(this);
     }
-    
-    public static String getLoginId(){
+
+    public static String getLoginID() {
         return loginID;
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.

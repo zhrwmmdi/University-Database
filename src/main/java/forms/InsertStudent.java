@@ -24,6 +24,7 @@ public class InsertStudent extends javax.swing.JFrame {
         initComponents();
         fillDepartments();
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        Tools.setCenter(this);
     }
 
     /**
