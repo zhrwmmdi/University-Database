@@ -23,6 +23,7 @@ public class AddStudentFrame extends javax.swing.JFrame {
     public AddStudentFrame() {
         initComponents();
         fillDepartments();
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     /**

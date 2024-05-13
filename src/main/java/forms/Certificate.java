@@ -20,12 +20,14 @@ public final class Certificate extends javax.swing.JFrame {
      */
     public Certificate() {
         initComponents();
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
     public Certificate(ResultSet result, ResultSet result2) {
         initComponents();
         setStudentData();
         fillCertificate(result);
         displayAvg(result2);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
     public void fillCertificate(ResultSet result){
        

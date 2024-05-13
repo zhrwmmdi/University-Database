@@ -20,10 +20,11 @@ public class InstructorTable extends javax.swing.JFrame {
         initComponents();
         findTeacherName(InstructorLogin.getLoginId());
         fillTable(result);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         
             }
     
-    public void fillTable(ResultSet result){
+    public final void fillTable(ResultSet result){
         clearTable(jTable1);
         try{
             while(result.next()){
@@ -77,7 +78,7 @@ public class InstructorTable extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jLabel1.setText("Teacher:");
+        jLabel1.setText("Instructor Name:  Dr.");
 
         jLabel2.setText("empty");
 
@@ -90,8 +91,8 @@ public class InstructorTable extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(145, Short.MAX_VALUE))
         );

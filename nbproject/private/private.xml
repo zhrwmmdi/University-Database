@@ -3,18 +3,21 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Hp/Documents/NetBeansProjects/DB-Uni/src/main/java/entity/Student.java</file>
-            <file>file:/C:/Users/Hp/Documents/NetBeansProjects/DB-Uni/src/main/java/tools/Tools.java</file>
+            <file>file:/C:/Users/Hp/Documents/NetBeansProjects/DB-Uni/src/main/java/forms/AdminLogin.java</file>
             <file>file:/C:/Users/Hp/Documents/NetBeansProjects/DB-Uni/src/main/java/forms/WelcomePage.java</file>
-            <file>file:/C:/Users/Hp/Documents/NetBeansProjects/DB-Uni/src/main/java/entity/Instructor.java</file>
             <file>file:/C:/Users/Hp/Documents/NetBeansProjects/DB-Uni/src/main/java/forms/InstructorPanel.java</file>
             <file>file:/C:/Users/Hp/Documents/NetBeansProjects/DB-Uni/src/main/java/forms/InsertStudent.java</file>
+            <file>file:/C:/Users/Hp/Documents/NetBeansProjects/DB-Uni/src/main/java/Main.java</file>
+            <file>file:/C:/Users/Hp/Documents/NetBeansProjects/DB-Uni/src/main/java/forms/StudentPanel.java</file>
+            <file>file:/C:/Users/Hp/Documents/NetBeansProjects/DB-Uni/src/main/java/forms/AddStudentFrame.java</file>
+            <file>file:/C:/Users/Hp/Documents/NetBeansProjects/DB-Uni/src/main/java/entity/Student.java</file>
+            <file>file:/C:/Users/Hp/Documents/NetBeansProjects/DB-Uni/src/main/java/tools/Tools.java</file>
+            <file>file:/C:/Users/Hp/Documents/NetBeansProjects/DB-Uni/src/main/java/entity/Instructor.java</file>
             <file>file:/C:/Users/Hp/Documents/NetBeansProjects/DB-Uni/src/main/java/forms/Certificate.java</file>
+            <file>file:/C:/Users/Hp/Documents/NetBeansProjects/DB-Uni/src/main/java/forms/AdminPanel.java</file>
             <file>file:/C:/Users/Hp/Documents/NetBeansProjects/DB-Uni/src/main/java/forms/InstructorLogin.java</file>
             <file>file:/C:/Users/Hp/Documents/NetBeansProjects/DB-Uni/src/main/java/forms/StudentLogin.java</file>
-            <file>file:/C:/Users/Hp/Documents/NetBeansProjects/DB-Uni/src/main/java/Main.java</file>
             <file>file:/C:/Users/Hp/Documents/NetBeansProjects/DB-Uni/src/main/java/forms/InstructorTable.java</file>
-            <file>file:/C:/Users/Hp/Documents/NetBeansProjects/DB-Uni/src/main/java/forms/StudentPanel.java</file>
         </group>
     </open-files>
 </project-private>

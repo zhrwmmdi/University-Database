@@ -11,7 +11,8 @@ public class Main {
         wp.setVisible(true);
       
         
-        //TODO:  reading data from tables
+
+        //TODO: clean code and refactoring
         //TODO: back buttons
         //closing connections
     }

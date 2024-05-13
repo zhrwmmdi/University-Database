@@ -5,16 +5,10 @@
 package main.java.forms;
 
 import java.sql.*;
-import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
 import main.java.tools.Tools;
 
 /**
@@ -47,6 +41,7 @@ public class AdminPanel extends javax.swing.JFrame {
         jList2 = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -73,6 +68,13 @@ public class AdminPanel extends javax.swing.JFrame {
 
         jLabel2.setText("Tables:");
 
+        jButton1.setText("Log out");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -82,12 +84,16 @@ public class AdminPanel extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(71, 71, 71)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton3)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(37, 37, 37)
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 645, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jButton3)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButton1))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(37, 37, 37)
+                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 645, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(457, 457, 457)
                         .addComponent(jLabel1)))
@@ -100,13 +106,15 @@ public class AdminPanel extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(15, 15, 15)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
-                .addComponent(jButton3)
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton3)
+                    .addComponent(jButton1))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
         pack();
@@ -116,16 +124,18 @@ public class AdminPanel extends javax.swing.JFrame {
         new AddStudentFrame().setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void displayTableData(String tableName){
-         // Clear the existing table data
-//        ((javax.swing.table.DefaultTableModel) jTable1.getModel()).setDataVector(new Object[][]{}, new Object[]{});
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        this.setVisible(false);
+        new WelcomePage().setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void displayTableData(String tableName) {
         try {
-           PreparedStatement state = Tools.getConnection().prepareStatement("SELECT * FROM " + tableName);
+            PreparedStatement state = Tools.getConnection().prepareStatement("SELECT * FROM " + tableName);
             ResultSet resultSet = state.executeQuery();
 
             // Get metadata about the ResultSet
-            java.sql.ResultSetMetaData metaData = resultSet.getMetaData();
+            ResultSetMetaData metaData = resultSet.getMetaData();
 
             // Get column count
             int columnCount = metaData.getColumnCount();
@@ -151,13 +161,11 @@ public class AdminPanel extends javax.swing.JFrame {
             // Set the data and column names in jTable1
             jTable1.setModel(new javax.swing.table.DefaultTableModel(data, columnNames));
 
-            
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    
     /**
      * @param args the command line arguments
      */
@@ -197,6 +205,7 @@ public class AdminPanel extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -207,31 +216,29 @@ public class AdminPanel extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void activateTablesList() {
-DefaultListModel<String> listModel = new DefaultListModel<>();
-        
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+
         try {
             PreparedStatement state = Tools.getConnection().prepareCall("SHOW TABLES");
             ResultSet result = state.executeQuery();
-            
-            while(result.next()){
+
+            while (result.next()) {
                 String tableName = result.getString(1);
                 listModel.addElement(tableName);
             }
         } catch (SQLException ex) {
-            System.out.println("Error is finding table name: "+ex.getMessage());
+            System.out.println("Error is finding table name: " + ex.getMessage());
         }
-        
-        
+
         jList2.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jList2.setModel(listModel);
-        
+
         // Add a ListSelectionListener to the JList
         jList2.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
-                    String selectedTable = jList2.getSelectedValue();
-                    displayTableData(selectedTable);
+                    displayTableData(jList2.getSelectedValue());
                 }
             }
         });
