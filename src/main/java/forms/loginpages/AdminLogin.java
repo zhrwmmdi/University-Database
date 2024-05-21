@@ -62,10 +62,6 @@ public class AdminLogin extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(155, 155, 155))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -81,9 +77,12 @@ public class AdminLogin extends javax.swing.JFrame {
                             .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)
                             .addComponent(jPasswordField1)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
+                        .addGap(157, 157, 157)
+                        .addComponent(jButton1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addComponent(jButton2)))
-                .addContainerGap(120, Short.MAX_VALUE))
+                .addContainerGap(85, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -98,9 +97,9 @@ public class AdminLogin extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addGap(28, 28, 28)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                 .addComponent(jButton2)
                 .addContainerGap())
         );
@@ -132,6 +131,10 @@ public class AdminLogin extends javax.swing.JFrame {
                                                                             "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
+            
+            statement.close();
+            Tools.closeConnection();
+            
         } catch (SQLException ex) {
             System.out.println("Error in login button method in AdminLogin class: " + ex.getMessage());
         }
@@ -205,6 +208,9 @@ public class AdminLogin extends javax.swing.JFrame {
             resultSet.next();
             String dbPassword = resultSet.getString(1);
             if(dbPassword.equals(givenPassword)) return true;
+            
+            statement.close();
+            Tools.closeConnection();
             
         } catch (SQLException ex) {
             System.out.println("Error in cheackPassword method of AdminLogin class: "+ex.getMessage());

@@ -146,6 +146,9 @@ public class AdminPanel extends javax.swing.JFrame {
 
             // Set the data and column names in jTable1
             jTable1.setModel(new javax.swing.table.DefaultTableModel(data, columnNames));
+            
+            state.close();
+            Tools.closeConnection();
 
         } catch (SQLException e) {
             System.out.println("Error in displayTableData method in AdminPanel class: "+e.getMessage());
@@ -212,6 +215,10 @@ public class AdminPanel extends javax.swing.JFrame {
                 String tableName = result.getString(1);
                 listModel.addElement(tableName);
             }
+            
+            state.close();
+            Tools.closeConnection();
+            
         } catch (SQLException ex) {
             System.out.println("Error in activateTablesList method in AdminPanel class: " + ex.getMessage());
         }

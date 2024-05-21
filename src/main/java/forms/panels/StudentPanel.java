@@ -51,16 +51,19 @@ public class StudentPanel extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(114, Short.MAX_VALUE)
+                .addContainerGap(30, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(45, 45, 45))
             .addGroup(layout.createSequentialGroup()
-                .addGap(159, 159, 159)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(104, 104, 104)
+                        .addComponent(jButton2))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(119, 119, 119)
+                        .addComponent(jButton1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -70,11 +73,11 @@ public class StudentPanel extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2))
-                .addGap(96, 96, 96)
+                .addGap(73, 73, 73)
                 .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 125, Short.MAX_VALUE)
+                .addGap(51, 51, 51)
                 .addComponent(jButton1)
-                .addGap(32, 32, 32))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
@@ -110,6 +113,9 @@ public class StudentPanel extends javax.swing.JFrame {
             state.setString(1,StudentLogin.getLoginID());
             ResultSet avgResult = state.executeQuery();
             new Certificate(fullDataResult, avgResult).setVisible(true);
+            
+            state.close();
+            Tools.closeConnection();
             
         } catch (SQLException ex) {
             System.out.println("Error in see certificate button method of StudentPanel class: "+ex.getMessage());

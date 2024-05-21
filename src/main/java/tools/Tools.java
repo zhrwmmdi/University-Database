@@ -28,6 +28,15 @@ public class Tools  {
         }
         return connect;
     }
+
+    public static void closeConnection() {
+        try {
+            connect.close();
+        } catch (SQLException ex) {
+            System.out.println("Error in closeConnection method of Tools class: "+ex.getMessage());
+        }
+    }
+    
     
     public static void setCenter(JFrame frame){
         Toolkit tool = Toolkit.getDefaultToolkit();
