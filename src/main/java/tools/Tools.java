@@ -10,6 +10,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 import main.java.forms.InstructorStudentsList;
 
 public class Tools  {
@@ -60,6 +62,11 @@ public class Tools  {
          } catch (SQLException ex) {
              Logger.getLogger(InstructorStudentsList.class.getName()).log(Level.SEVERE, null, ex);
          }
+    }
+    
+        public static void clearTable(JTable table) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
     }
 }
 
