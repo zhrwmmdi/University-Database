@@ -177,8 +177,10 @@ public class TakeCourse extends javax.swing.JFrame {
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
        Tools.clearTable(jTable2);
+       
         String selectedCourseId = jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString();
         canTake = checkPreReq(loginId, selectedCourseId);
+        
         String department = jTable1.getValueAt(jTable1.getSelectedRow(), 2).toString();
         displayValidInstrcutors(department);
     }//GEN-LAST:event_jTable1MouseClicked
@@ -274,6 +276,10 @@ public class TakeCourse extends javax.swing.JFrame {
                 }
                 return true;
             }
+            
+            state.close();
+            Tools.closeConnection();
+            
         } catch (SQLException ex) {
             System.out.println("Error in checkPreReq method of TakeCourse class: "+ex.getMessage());
         }  
@@ -293,6 +299,10 @@ public class TakeCourse extends javax.swing.JFrame {
                 DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
                 model.addRow(content);
             }
+            
+            state.close();
+            Tools.closeConnection();
+            
         } catch (SQLException ex) {
             System.out.println("Error in displayValidInstrcutors method in TakeCourse class: "+ex.getMessage());
         }
@@ -330,6 +340,9 @@ public class TakeCourse extends javax.swing.JFrame {
              if (rowsInserted != 1){
                  throw new SQLException("Error in updating student relation.");
              }
+             
+             state.close();
+             Tools.closeConnection();
     }
 
 }
