@@ -309,37 +309,45 @@ public class TakeCourse extends javax.swing.JFrame {
     }
 
     private void updateRelations(String studentId, String courseId, String instructorId, int addedCredit) throws SQLException{
+        Tools.connectToDB();
+        Tools.getConnection().setAutoCommit(false);
         
-        PreparedStatement state = Tools.connectToDB().prepareStatement("insert into section values(?,2,'Spring',2024,null, null,null);");
+        PreparedStatement state = Tools.getConnection().prepareStatement("insert into section values(?,2,'Spring',2024,null, null,null);");
             state.setString(1, courseId);
              int rowsInserted = state.executeUpdate();
              if (rowsInserted != 1){
+                 Tools.getConnection().rollback();
                  throw new SQLException("Error in updating section relation.");
              }
 
-            state = Tools.connectToDB().prepareStatement("insert into takes values(?,?,2,'Spring',2024,null);");
+            state = Tools.getConnection().prepareStatement("insert into takes values(?,?,2,'Spring',2024,null);");
             state.setString(1, studentId);
              state.setString(2, courseId);
              rowsInserted = state.executeUpdate();
              if (rowsInserted != 1){
+                 Tools.getConnection().rollback();
                  throw new SQLException("Error in updating takes relation.");
              }
              
-             state = Tools.connectToDB().prepareStatement("insert into teaches values(?,?,2,'Spring',2024);");
+             state = Tools.getConnection().prepareStatement("insert into teaches values(?,?,2,'Spring',2024);");
             state.setString(1, instructorId);
              state.setString(2, courseId);
              rowsInserted = state.executeUpdate();
              if (rowsInserted != 1){
+                 Tools.getConnection().rollback();
                  throw new SQLException("Error in updating teaches relation.");
              }
              
-             state = Tools.connectToDB().prepareStatement("UPDATE student SET tot_cred = tot_cred + ? WHERE id=?;");
+             state = Tools.getConnection().prepareStatement("UPDATE student SET tot_cred = tot_cred + ? WHERE id=?;");
             state.setInt(1, addedCredit);
              state.setString(2, studentId);
              rowsInserted = state.executeUpdate();
              if (rowsInserted != 1){
+                 Tools.getConnection().rollback();
                  throw new SQLException("Error in updating student relation.");
              }
+             
+             Tools.getConnection().commit();
              
              state.close();
              Tools.closeConnection();
