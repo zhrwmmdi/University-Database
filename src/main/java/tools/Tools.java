@@ -30,10 +30,6 @@ public class Tools  {
         }
         return connect;
     }
-    
-    public static Connection getConnection(){
-        return connect;
-    }
 
     public static void closeConnection() {
         try {
