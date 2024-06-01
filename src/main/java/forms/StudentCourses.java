@@ -9,10 +9,11 @@ public class StudentCourses extends javax.swing.JFrame {
 
     private String loginId;
     private String deleted_course_id;
-    
+
     public StudentCourses() {
         initComponents();
     }
+
     public StudentCourses(String loginId) {
         initComponents();
         this.loginId = loginId;
@@ -170,7 +171,7 @@ public class StudentCourses extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-         getCurrentCourses();
+        getCurrentCourses();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -179,24 +180,24 @@ public class StudentCourses extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         int selectedRow = jTable1.getSelectedRow();
-        if(selectedRow == -1){
-                    //no rows are selected
-                    JOptionPane.showMessageDialog(null, "Choose a course!",
-                                                                                             "Fail", JOptionPane.WARNING_MESSAGE);
-        }else{
-                    if(canDelete()){
-                        try {
-                          updateRelations();
-                          JOptionPane.showMessageDialog(null, "Course Deleted Successfully!",
-                                                                                             "Success", JOptionPane.INFORMATION_MESSAGE);
-                          getCurrentCourses();
-                      } catch (SQLException ex) {
-                          System.out.println("Error in delete course button of StudentCourses class: "+ex.getMessage());
-                      }  
-                }else{
-                    JOptionPane.showMessageDialog(null, "You can't delete any more courses this semester\nbecause you have already deleted course %s".formatted(deleted_course_id),
-                                                                                             "Fail", JOptionPane.WARNING_MESSAGE);
+        if (selectedRow == -1) {
+            //no rows are selected
+            JOptionPane.showMessageDialog(null, "Choose a course!",
+                    "Fail", JOptionPane.WARNING_MESSAGE);
+        } else {
+            if (canDelete()) {
+                try {
+                    updateRelations();
+                    JOptionPane.showMessageDialog(null, "Course Deleted Successfully!",
+                            "Success", JOptionPane.INFORMATION_MESSAGE);
+                    getCurrentCourses();
+                } catch (SQLException ex) {
+                    System.out.println("Error in delete course button of StudentCourses class: " + ex.getMessage());
                 }
+            } else {
+                JOptionPane.showMessageDialog(null, "You can't delete any more courses this semester\nbecause you have already deleted course %s".formatted(deleted_course_id),
+                        "Fail", JOptionPane.WARNING_MESSAGE);
+            }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -206,72 +207,79 @@ public class StudentCourses extends javax.swing.JFrame {
         jTextField1.setText("2024");
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void updateRelations() throws SQLException{
+    private void updateRelations() throws SQLException {
+        //Tools.connectToDB();
+       // Tools.getConnection().setAutoCommit(false);
+
         PreparedStatement state = Tools.connectToDB()
-                .prepareStatement("delete from section where course_id=? and sec_id=? and semester=? and year=?;");
-        
-            state.setString(1, jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
-            state.setString(2, jComboBox2.getSelectedItem().toString());
-            state.setString(3, jComboBox1.getSelectedItem().toString());
-            state.setString(4, jTextField1.getText());
-            
-             int rowsChanged = state.executeUpdate();
-             if (rowsChanged != 1){
-                 throw new SQLException("Error in updating section relation.");
-             }
-            
-             state = Tools.connectToDB().prepareStatement("UPDATE student SET tot_cred = tot_cred - ? WHERE id=?;");
-            state.setString(1,jTable1.getValueAt(jTable1.getSelectedRow(), 2).toString());
-             state.setString(2, loginId);
-             rowsChanged = state.executeUpdate();
-             if (rowsChanged != 1){
-                 throw new SQLException("Error in updating student relation.");
-             }
-             
-             state = Tools.connectToDB().prepareStatement("insert into deletion values(?,?,?,?,0,?);");
-            state.setString(1,loginId);
-             state.setString(2, jComboBox1.getSelectedItem().toString());
-             state.setString(3, jTextField1.getText());
-             state.setString(4, String.valueOf(jComboBox2.getSelectedItem()));
-             state.setString(5,jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
-            
-             rowsChanged = state.executeUpdate();
-             if (rowsChanged != 1){
-                 throw new SQLException("Error in insertion of deletion relation.");
-             }
-             
-             
-             state.close();
-             Tools.closeConnection();
+                .prepareStatement("insert into deletion values(?,?,?,?,?);");
+
+        state.setString(1, loginId);
+        state.setString(2, jComboBox1.getSelectedItem().toString());
+        state.setInt(3, Integer.parseInt(jTextField1.getText()));
+        state.setString(4, String.valueOf(jComboBox2.getSelectedItem()));
+        state.setString(5, jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
+
+        int rowsChanged = state.executeUpdate();
+        System.out.println("here+"+ rowsChanged);
+        if (rowsChanged != 1) {
+            throw new SQLException("Error in insertion of deletion relation.");
+        }
+
+        state = Tools.connectToDB().prepareStatement("UPDATE student SET tot_cred = tot_cred - ? WHERE id=?;");
+        state.setInt(1, Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 2).toString()));
+        state.setString(2, loginId);
+        rowsChanged = state.executeUpdate();
+        if (rowsChanged != 1) {
+            //Tools.getConnection().rollback();
+            throw new SQLException("Error in updating student relation.");
+        }
+
+        state = Tools.connectToDB().prepareStatement("delete from section where course_id=? and sec_id=? and semester=? and year=?;");
+
+        state.setString(1, jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString());
+        state.setString(2, jComboBox2.getSelectedItem().toString());
+        state.setString(3, jComboBox1.getSelectedItem().toString());
+        state.setString(4, jTextField1.getText());
+
+        rowsChanged = state.executeUpdate();
+        if (rowsChanged != 1) {
+            //Tools.getConnection().rollback();
+            throw new SQLException("Error in updating section relation.");
+        }
+
+      //  Tools.getConnection().commit();
+        state.close();
+        Tools.closeConnection();
     }
-    
-    private void getCurrentCourses(){
+
+    private void getCurrentCourses() {
         Tools.clearTable(jTable1);
         try {
             String query = "select course.course_id, title, credits from course natural join takes where id = ? and semester=? and year=? and sec_id=?";
-            try (PreparedStatement state = Tools.connectToDB().prepareStatement(query)) {
+            try ( PreparedStatement state = Tools.connectToDB().prepareStatement(query)) {
                 state.setString(1, loginId);
                 state.setString(2, jComboBox1.getSelectedItem().toString());
                 state.setString(3, jTextField1.getText());
                 state.setString(4, jComboBox2.getSelectedItem().toString());
                 ResultSet result = state.executeQuery();
-                while(result.next()){
+                while (result.next()) {
                     String course_id = result.getString(1);
                     String title = result.getString(2);
                     String credit = result.getString(3);
-                    
+
                     Object[] content = {course_id, title, credit};
                     DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
                     model.addRow(content);
                 }
             }
             Tools.closeConnection();
-            
+
         } catch (SQLException e) {
-            System.out.println("Error in see getCurrentCourses method of StudentCourses class: "+e.getMessage());
+            System.out.println("Error in see getCurrentCourses method of StudentCourses class: " + e.getMessage());
         }
     }
-    
+
     /**
      * @param args the command line arguments
      */
@@ -326,31 +334,28 @@ public class StudentCourses extends javax.swing.JFrame {
         try {
             String query = "select deleted_course_id from deletion where id=? and semester=? and year=? and sec_id=?";
             PreparedStatement state = Tools.connectToDB().prepareStatement(query);
-            
+
             state.setString(1, loginId);
             state.setString(2, jComboBox1.getSelectedItem().toString());
             state.setString(3, jTextField1.getText());
             state.setString(4, jComboBox2.getSelectedItem().toString());
 
             ResultSet result = state.executeQuery();
-            if(result.next()){
+            if (result.next()) {
                 deleted_course_id = result.getString(1);
                 state.close();
                 Tools.closeConnection();
                 return false;
-            }else{
+            } else {
                 state.close();
                 Tools.closeConnection();
                 return true;
             }
-            
-            
-        } catch (SQLException ex) {
-            System.out.println("Error in canDelete method of StudentCourses class:  "+ex.getMessage());
-        }
-        return false;      
-    }
-   
 
+        } catch (SQLException ex) {
+            System.out.println("Error in canDelete method of StudentCourses class:  " + ex.getMessage());
+        }
+        return false;
+    }
 
 }

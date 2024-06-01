@@ -309,6 +309,8 @@ public class TakeCourse extends javax.swing.JFrame {
     }
 
     private void updateRelations(String studentId, String courseId, String instructorId, int addedCredit) throws SQLException{
+        //Tools.connectToDB();
+     //   Tools.getConnection().setAutoCommit(false);
         
         PreparedStatement state = Tools.connectToDB().prepareStatement("insert into section values(?,2,'Spring',2024,null, null,null);");
             state.setString(1, courseId);
@@ -322,6 +324,7 @@ public class TakeCourse extends javax.swing.JFrame {
              state.setString(2, courseId);
              rowsInserted = state.executeUpdate();
              if (rowsInserted != 1){
+             
                  throw new SQLException("Error in updating takes relation.");
              }
              
@@ -330,6 +333,7 @@ public class TakeCourse extends javax.swing.JFrame {
              state.setString(2, courseId);
              rowsInserted = state.executeUpdate();
              if (rowsInserted != 1){
+            
                  throw new SQLException("Error in updating teaches relation.");
              }
              
@@ -338,8 +342,11 @@ public class TakeCourse extends javax.swing.JFrame {
              state.setString(2, studentId);
              rowsInserted = state.executeUpdate();
              if (rowsInserted != 1){
+                
                  throw new SQLException("Error in updating student relation.");
              }
+             
+//             Tools.getConnection().commit();
              
              state.close();
              Tools.closeConnection();
