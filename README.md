@@ -18,6 +18,7 @@ This is a Java-based project that manages a university's database system, allowi
 
 ## Database Schema
 The project utilizes the database schema presented in the book *Database System Concepts (7th Edition)*. It includes tables such as `student`, `courses`, `instructor`, `takes`, and others, designed to effectively manage a university database.
+![Database Schema](assets/schema.png)
 
 ## Technologies Used
 - **Java** for the backend logic.
